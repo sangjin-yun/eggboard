@@ -60,7 +60,6 @@ const userManage = (function (userManage, $) {
             getUserSetting();
         };
         option.ERROR_CALLBACK = function (response) {
-            console.log(response);
             toastr["error"]("오류 발생");
         };
         ajaxWrapper.callAjax(option);

@@ -5,17 +5,13 @@
       layout:decorate="~{layout/defaultLayout}">
 <head>
 <meta charset="UTF-8">
-
 <script th:inline="javascript">
-/*<![CDATA[*/
-    let nodeId = /*[[ ${nodeId} ]]*/'1';
-    let nodeIpAddress = /*[[ ${nodeIpAddress} ]]*/'';
-    let userRole = /*[[ ${userRole} ]]*/'';
-/*]]>*/
-</script>
-<script th:src="@{/js/monitoring/pipeline.js}"></script>
-</head>
 
+</script>
+
+<script th:src="@{/js/code.js}"></script>
+
+</head>
 <body>
 <!-- ===============================================-->
 <!--    Main Content-->
@@ -23,12 +19,12 @@
 <section layout:fragment="content" class="p-0">
     <nav aria-label="breadcrumb" style="--falcon-breadcrumb-divider: '»'; margin-bottom: 10px; font-size: 20px;">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item" chkI18n="menu.node"></li>
-        <li class="breadcrumb-item" th:each="nodeList:${nodeList}" th:if="${nodeList.getNodeId().toString().equals(nodeId)}" th:text="${nodeList.getAlias()}"></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="javascript:location.reload();" chkI18n="menu.pipeline">Pipelines</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="javascript:location.reload();" chkI18n="menu.actionLog"></a></li>
       </ol>
     </nav>
-    <div id="drawArea"></div>
+    <div class="card">
+        
+    </div>
 </section>
 <!-- ===============================================-->
 <!--    End of Main Content-->
