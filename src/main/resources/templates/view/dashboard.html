@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<meta charset="UTF-8">
+
+<!-- Apache ECharts line race -->
+<script th:src="@{/vendor/echarts/echarts.min.js}"></script>
+<!--<script th:src="@{/js/dashboardChart.js}"></script>-->
+<script th:src="@{/js/dashboard.js}"></script>
+
+</head>
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page" ><a href="javascript:location.reload();">대시보드</a></li>
+      </ol>
+    </nav>
+<div class="content" style="max-height: 80vh !important; padding-bottom: 0;">
+    <div class="row g-0" >
+        <div class="col-lg-2 pe-lg-2 mb-3" style="max-height: 80vh;">
+            <div class="card-header bg-light">
+                업체 목록
+                <button class="btn btn-outline-primary mr-1 mb-1" type="button" style="float: right;">조회</button>
+            </div>
+            <div class="card-body p-0 bg-light" style="min-height: 80vh; max-height: 80vh; overflow-y: auto;" id="treeCompany">
+                <ul class="mb-0 treeview treeview-slect" id="treeviewSelect" data-options='{"select":true}' style="margin-left: 1.5rem;">
+                  <li class="treeview-list-item">
+                    <div class="treeview-item">
+                      <input class="form-check-input" type="checkbox" checked/>
+                      <a class="flex-1" href="#!">
+                        <p class="treeview-text">
+                          <span class="me-2 fas fa-chart-area"></span>
+                          종합 결과
+                        </p>
+                      </a>
+                    </div>
+                  </li>
+                  
+                  <li class="treeview-list-item" th:each="companyList:${result.company}">
+                    <div class="toggle-container" >
+                        <input class="form-check-input" type="checkbox" th:data-target="'#treeviewSelect-'+${companyList.getCompanyIdx()}+'-1'" />
+                        <a data-bs-toggle="collapse" th:href="'#treeviewSelect-'+${companyList.getCompanyIdx()}+'-1'" role="button" aria-expanded="false">
+                            <p class="treeview-text" th:text="${companyList.getAlias()}">
+                            </p>
+                        </a>
+                    </div>
+                    <ul class="collapse treeview-list" th:id="'treeviewSelect-'+${companyList.getCompanyIdx()}+'-1'" data-show="true">
+                      <li class="treeview-list-item" th:each="sampleList:${result.sample}" th:if="${companyList.getCompanyIdx() == sampleList.getCompanyIdx()}">
+                        <div class="toggle-container" >
+                            <input class="form-check-input" type="checkbox" th:data-target="'#treeviewSelect'+${companyList.getCompanyIdx()}+'-'+${sampleList.getSampleNumber()}" />
+                            <a data-bs-toggle="collapse" th:href="'#treeviewSelect'+${companyList.getCompanyIdx()}+'-'+${sampleList.getSampleNumber()}" role="button" aria-expanded="false">
+                            <p class="treeview-text" th:text="${sampleList.getSampleNumber()}"></p>
+                          </a>
+                        </div>
+                        <ul class="collapse treeview-list" th:id="'treeviewSelect'+${companyList.getCompanyIdx()}+'-'+${sampleList.getSampleNumber()}" data-show="true">
+                            <li class="treeview-list-item">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox"/>
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-temperature-high text-danger"></span>
+                                      기상청 온도
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>
+                              <li class="treeview-list-item">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox" />
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-temperature-high text-primary"></span>
+                                      기상청 습도
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>
+                              <li class="treeview-list-item">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox" />
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-temperature-high text-danger"></span>
+                                      시료채취 온도
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>
+                              <li class="treeview-list-item">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox" />
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-temperature-high text-primary"></span>
+                                      시료채취 습도
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>
+                              <li class="treeview-list-item" th:each="haugh:${result.haughUnit}" th:if="${haugh.getSampleOrder() == sampleList.getSampleOrder()}">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox" />
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-egg text-warning"></span>
+                                      <!--호우유닛 [[ ${haugh['haughUnitOrder']} ]]차-->
+                                      호우유닛
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>
+                              <!--<li class="treeview-list-item">
+                                <div class="treeview-item">
+                                  <input class="form-check-input" type="checkbox" />
+                                  <a class="flex-1" href="#!">
+                                    <p class="treeview-text">
+                                      <span class="me-2 fas fa-bug text-warning"></span>
+                                      균 수치
+                                    </p>
+                                  </a>
+                                </div>
+                              </li>-->
+                              
+                          
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-10 pe-lg-2 mb-3" style="min-height: 80vh;">
+            <div class="card-header bg-light">
+                종합 결과 온도 및 호우유닛 그래프
+            </div>
+            <div class="card-body p-0 bg-light" style="min-height: 80vh;">
+                <div id="container" style="min-height: 80vh;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

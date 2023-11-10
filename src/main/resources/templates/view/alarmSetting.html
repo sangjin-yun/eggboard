@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<meta charset="UTF-8">
+<!-- ion.rangeSlider --><link rel="stylesheet" th:href="@{/vendor/ion-rangeslider/css/ion.rangeSlider.min.css}">
+<!-- ion.rangeSlider --><script th:src="@{/vendor/ion-rangeslider/js/ion.rangeSlider.min.js}"></script>
+<script th:src="@{/js/alarmSetting.js}"></script>
+</head>
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb" style="--falcon-breadcrumb-divider: '»'; margin-bottom: 10px; font-size: 20px;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><a href="javascript:location.reload();" chkI18n="menu.alarmSetting"></a></li>
+      </ol>
+    </nav>
+    
+    <div class="card" style="margin-bottom: 10px;">
+        <div class="card-body overflow-hidden p-lg-6" style="padding: 1rem !important;">
+            <div class="card-header border-bottom" style="padding: 5px;">
+                <div class="col-auto align-self-center" style="margin-bottom: 10px;">
+                    <div style="width: 50%; display:inline-block;">
+                        <input type="hidden" id="nodeSeqCpu" value=""/>
+                        <input type="hidden" id="nodeSeqMemory" value=""/>
+                        <input type="hidden" id="nodeSeqDisk" value=""/>
+                        <input type="hidden" id="nodeSeqPeriod" value=""/>
+                        <input type="hidden" id="nodeSeqSize" value=""/>
+                        
+                        <input type="hidden" id="nodeSeqLow" value=""/>
+                        <input type="hidden" id="nodeSeqHigh" value=""/>
+                        <input type="hidden" id="nodeSeqStage" value=""/>
+                        <input type="hidden" id="nodeSeqInterval" value=""/>
+                        <h5 class="mb-0" style="width: 120px; display: inline-block;" chkI18n="table.nodes"></h5>
+                        <select class="form-control" id="nodeList" onchange="alarmSetting.changeOnCue();" style="width: 45%; display:inline-block;">
+                            <option th:each="nodeList, i : ${nodeList}" th:value="${nodeList.getNodeId()}" th:text="${nodeList.getAlias()}" th:selected="${i.count} == 1" th:if="${nodeList.getActcodeYn() == 'Y'}"></option>
+                        </select>
+                        <button class="btn btn-outline-primary mr-1 mb-1" style="margin-left: 10px;" type="button" onclick="alarmSetting.saveAlarmSetting();" chkI18n="button.save">Setting Save</button>
+                    </div>
+                    <a href="javascript:alarmSetting.showAndhideArea('alarm');" style="float: right;">
+                        <span class="fas fa-minus mr-1" id="span_alarm" data-fa-transform="shrink-3"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; margin-left: -10px;" id="div_alarm">
+                <h5 class="mb-0" style="margin-bottom: 15px !important;" chkI18n="table.threshold"></h5>
+                
+                <div class="col-sm-3" style="width: 33%;">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label for="oncueCpuThreshol" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto;" chkI18n="table.cpu"></label>
+                            <div>
+                                <input type="text" class="js-range-slider" name="oncueSlider" id="oncueCpuThreshol" value=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="width: 33%;">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label for="oncueMemThreshol" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto;" chkI18n="table.memory"></label>
+                            <div class="">
+                                <input type="text" class="js-range-slider" name="oncueSlider" id="oncueMemThreshol" value=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="width: 33%;">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label for="oncueMemThreshol" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto;" chkI18n="table.disk"></label>
+                            <div class="">
+                                <input type="text" class="js-range-slider" name="oncueSlider" id="oncueDiskThreshol" value=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mb-0" style="display: inline-block; margin-top:20px; margin-bottom: 15px !important;" chkI18n="table.elastic"></h5>
+                
+                <div class="col-sm-3" style="width: 260px; margin-top:10px;">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label for="input_storagePeriod" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto;" chkI18n="table.storagePeriod"></label>
+                            <div>
+                                <div class="form-check" style="display: inline-block; margin-right: 10px;">
+                                    <input class="form-check-input" id="storagePeriod" type="checkbox" value="Y" onclick="alarmSetting.limitCheck(this);"/>
+                                    <label class="form-check-label mb-0" for="storagePeriod" chkI18n="table.noLimit"></label>
+                                </div>
+                                <input type="text" class="form-control" style="width:30%; display: inline-block;" id="input_storagePeriod" value="" maxlength="4"/>
+                                <span style="display: inline-block; margin-left:5px;" chkI18n="table.days"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3" style="width: 260px; margin-top:10px;">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label for="input_storageSize" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto;" chkI18n="table.storagelimit"></label>
+                            <div class="">
+                                <div class="form-check" style="display: inline-block; margin-right: 10px;">
+                                    <input class="form-check-input" id="storageSize" type="checkbox" value="Y" onclick="alarmSetting.limitCheck(this);"/>
+                                    <label class="form-check-label mb-0" for="storageSize" chkI18n="table.noLimit"></label>
+                                </div>
+                                <input type="text" class="form-control" style="width:30%; display: inline-block;" id="input_storageSize" value="" maxlength="4"/>
+                                <span style="display: inline-block; margin-left:5px;">GB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3" style="width: 25%; margin-top:10px;">
+                    <div class="form-group row">
+                        <label for="storageuse" class="control-label col-sm-2 text-center align-self-center" style="font-size: 1rem !important; width: auto; padding-right: 5px;" chkI18n="table.storagestatus"></label>
+                        <input type="input" id="storageuse" style="display:none;"/>
+                        <div class="card-body d-flex align-items-center" style="margin-top: -20px; margin-left: -3px;">
+                            <div class="w-100">
+                                <h6 class="mb-3 text-800" style="display: inline-block; margin-right:5px;" chkI18n="table.storageuse"></h6>
+                                <h6 class="mb-3 text-800" style="display: inline-block;"><strong class="text-dark" id="usingNow">0</strong> GB of <strong class="text-dark" id="usingMax">0</strong> GB</h6>
+                                <div class="progress mb-3 rounded-3" style="height: 10px;">
+                                    <div class="progress-bar bg-progress-gradient border-end border-white border-2" id="usingBox" role="progressbar" aria-valuenow="24.4" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</section>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

@@ -1,0 +1,10 @@
+   _____ _             _   
+  / ____| |           | |  
+ | (___ | |_ __ _ _ __| |_ 
+  \___ \| __/ _` | '__| __|
+  ____) | || (_| | |  | |_ 
+ |_____/ \__\__,_|_|   \__|
+
+=== SDPLEX OnCue Admin V3 ===
+
+${AnsiColor.BRIGHT_GREEN}:: Spring Boot ::${AnsiColor.DEFAULT}${spring-boot.formatted-version}

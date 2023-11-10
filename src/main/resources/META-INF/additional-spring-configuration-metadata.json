@@ -1,0 +1,57 @@
+{"properties": [
+  {
+    "name": "events.connect.timeout",
+    "type": "java.lang.Long",
+    "description": "A description for 'events.connect.timeout'"
+  },
+  {
+    "name": "events.sse.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'events.sse.timeout'"
+  },
+  {
+    "name": "elasticsearch.host",
+    "type": "java.lang.String",
+    "description": "A description for 'elasticsearch.host'"
+  },
+  {
+    "name": "elasticsearch.port",
+    "type": "java.lang.String",
+    "description": "A description for 'elasticsearch.port'"
+  },
+  {
+    "name": "elasticsearch.scheme",
+    "type": "java.lang.String",
+    "description": "A description for 'elasticsearch.scheme'"
+  },
+  {
+    "name": "app.rest",
+    "type": "java.lang.String",
+    "description": "A description for 'app.rest'"
+  },
+  {
+    "name": "local.path",
+    "type": "java.lang.String",
+    "description": "A description for 'local.path'"
+  },
+  {
+    "name": "local.jsPath",
+    "type": "java.lang.String",
+    "description": "A description for 'local.jsPath'"
+  },
+  {
+    "name": "ztadb.url",
+    "type": "java.lang.String",
+    "description": "A description for 'ztadb.url'"
+  },
+  {
+    "name": "ztadb.username",
+    "type": "java.lang.String",
+    "description": "A description for 'ztadb.username'"
+  },
+  {
+    "name": "ztadb.password",
+    "type": "java.lang.String",
+    "description": "A description for 'ztadb.password'"
+  }
+]}

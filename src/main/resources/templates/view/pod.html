@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<meta charset="UTF-8">
+<style>
+/* Pods List Start */
+#podTable_filter{
+        margin-top: 10px;
+            float: right;
+            width: 125%;
+}
+#podTable_filter label{
+        font-size: 17px;
+        display: inline-block;
+        float: right;
+}
+#podTable_filter label input{
+        width: 300px;
+        height: 35px;
+}
+#pipelineFilter {
+        width: 300px;
+    float: right;
+    margin-right: 15px;
+}
+
+#podTable_paginate{
+        margin-top: 10px;
+}
+
+#podTable_length{
+        margin-top: 10px;
+}
+#podTable_length label{
+        font-size: 17px;
+        width: 50%;
+}
+/* Pods List End */
+
+/* Pods Resource Chart Start */
+#podChartTable_filter{
+    width: 465px;
+    float: right;
+}
+#podChartTable_filter label{
+    font-size: 16px;
+    display: inline-block;
+    width: 460px;
+}
+#podChartTable_filter label input{
+    height: 32px;
+    width: 360px;
+}
+
+#chartPipelineFilter {
+    margin-bottom : 10px;
+}
+
+#podChartTable_paginate{
+    margin-top: 10px;
+}
+
+#podChartTable_length{
+    margin-top: 10px;
+}
+#podChartTable_length label{
+    font-size: 17px;
+    width: 50%;
+}
+/* Pods Resource Chart End */
+</style>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    let nodeId = /*[[ ${nodeId} ]]*/'1';
+    let nodeIpAddress = /*[[ ${nodeIpAddress} ]]*/'1';
+    let nodeCheck = /*[[ ${nodeCheck} ]]*/'off';
+    let nodePodChartMax = /*[[ ${nodePodChartMax} ]]*/'100';
+/*]]>*/
+</script>
+
+<script th:src="@{/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/js/monitoring/podChart.js}"></script>
+<script th:src="@{/js/monitoring/pod.js}"></script>
+
+
+</head>
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb" style="--falcon-breadcrumb-divider: '»'; margin-bottom: 10px; font-size: 20px;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" chkI18n="menu.node"></li>
+        <li class="breadcrumb-item" th:each="nodeList:${nodeList}" th:if="${nodeList.getNodeId().toString().equals(nodeId)}" th:text="${nodeList.getAlias()}"></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="javascript:location.reload();" chkI18n="menu.pod">Pods</a></li>
+      </ol>
+    </nav>
+    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-body overflow-hidden p-lg-6" style="padding: 1rem !important;">
+            <div class="card-header border-bottom" style="padding: 5px;">
+                <div class ="col-auto align-self-center" style="margin-bottom: 10px;">
+                    <h5 class="mb-0" style="display: inline-block;" chkI18n="pod.rescoureChart"></h5>
+                     <button type="button" class="btn btn-outline-primary" style="margin-left: 10px;" onclick="javascript:pod.podSelectModal();" chkI18n="table.select"></button>
+                    <a href="javascript:pod.showAndhideArea('dash');" style="float: right;">
+                        <span class="fas fa-minus mr-1" id="span_dash" data-fa-transform="shrink-3"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-9" style="width: 100%;" id="div_dash">
+                <div class="row">
+                    <div class="col-md-4" style="width: 100%; height:350px;">
+                        <div class="card card-primary card-outline" style=" height:350px;">
+                            <div class="card-header" style="margin-bottom: -40px; margin-left: 20px;">
+                                <i class="far fa-chart-bar"></i>
+                                <h4 class="card-title" chkI18n="table.cpu" style="display: inline-block;">
+                                 </h4>
+                            </div>
+                            <div class="card-body" id="chart1" style="height:340px; margin-top: -50px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="width: 100%; height:350px;">
+                        <div class="card card-primary card-outline" style=" height:350px;">
+                            <div class="card-header" style="margin-bottom: -40px; margin-left: 20px;">
+                                <i class="far fa-chart-bar"></i>
+                                <h4 class="card-title" chkI18n="table.memory" style="display: inline-block;">
+                                 </h4>
+                            </div>
+                            <div class="card-body" id="chart2" style="height:340px; margin-top: -50px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-body overflow-hidden p-lg-6" style="padding: 1rem !important;">
+            <div class="row align-items-center">
+                
+                <div class="card-header border-bottom"  style="padding: 20px; margin-top: -10px;">
+                    <div class="col-auto align-self-center">
+                        <div class ="col-auto align-self-center">
+                            <h5 class="mb-0" chkI18n="table.pods"></h5>
+                            <a href="javascript:pod.showAndhideArea('pod');" style="float: right; margin-top: -25px;">
+                                <span class="fas fa-minus mr-1" id="span_pod" data-fa-transform="shrink-3"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div> 
+                
+                <div class="table-responsive scrollbar" id="div_pod">
+                    <div id="tableExample3">
+                      <div class="table-responsive scrollbar">
+                        <table class="table table-bordered table-striped fs--1 mb-0" id="podTable">
+                          <thead class="bg-200 text-900">
+                            <tr>
+                              <th chkI18n="table.pipeline"></th>
+                              <th chkI18n="table.podname"></th>
+                              <th chkI18n="table.cpu"></th>
+                              <th chkI18n="table.memory"></th>
+                              <th chkI18n="table.status"></th>
+                              <th chkI18n="table.control"></th>
+                            </tr>
+                          </thead>
+                          <tbody id="podTbody">
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- podSelectModal Start -->
+    <div class="modal fade" id="podSelectModal" tabindex="-1" role="dialog" aria-labelledby="podSelectModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"> 
+          <div class="modal-header">
+            <h5 class="modal-title" id="podSelectModalLabel" chkI18n="pod.rescoureChart"></h5>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive scrollbar">
+                <div>
+                  <select id="chartPipelineFilter" class="form-control">
+                    <option value="" chkI18n="table.pipelines"></option>
+                    <option th:each="pipeList:${pipeList}" th:value="${pipeList.getAlias()}" th:text="${pipeList.getAlias()}"></option>
+                  </select>
+                </div>
+                <table class="table table-bordered table-striped fs--1 mb-0" id="podChartTable">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th chkI18n="table.pipeline"></th>
+                      <th chkI18n="table.podname"></th>
+                      <th chkI18n="table.select"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="podChartTbody">
+                  </tbody>
+                </table>
+            </div>
+            
+            <div class="row justify-content-start g-0" style="margin-bottom: 15px; margin-top: 15px;">
+                <div style="display: flex;">
+                    <span style="width: 70px; text-align: center;" chkI18n="table.select"></span>
+                    <div style="margin-left: 10px;" id="chartPodList">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer" style="margin-top: 20px; padding: 15px 0px 10px 0px;">
+                <div style="display: inline-block; margin-right: 85px;">
+                <span style="width: 122px;" chkI18n="table.chartMax"></span>
+                    <div style="display: inline-block; width: 80px;">
+                        <input type="number" style="margin-left: 5px;" class="form-control" id="podChartMax" value="100" min="1" max="100">
+                    </div>
+                    </div>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onclick="$('#podSelectModal').modal('hide');" chkI18n="button.cancel"></button>
+              <button type="button" class="btn btn-outline-primary" onclick="pod.chartSettingSave();" chkI18n="button.save"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- nodeAddModal Start -->
+    
+</section>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

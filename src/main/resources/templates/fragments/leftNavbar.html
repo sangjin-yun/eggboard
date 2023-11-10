@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<!-- Left Navbar -->
+<nav th:fragment="leftNavbar" class="navbar navbar-light navbar-vertical navbar-expand-xl">
+    <div class="d-flex align-items-center">
+        <div class="toggle-icon-wrapper">
+            <button id="navBtn" class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left">
+                <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
+            </button>
+        </div>
+        <a class="navbar-brand me-1 me-sm-3" href="/dashboard">
+            <div class="d-flex align-items-center" style="padding-top: 0.825rem !important;padding-bottom: 0.825rem !important;">
+                <img class="me-2" th:src="@{/image/egg.png}" alt="" width="40" /><span class="font-sans-serif">계란자조금</span>
+            </div>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+        <div class="navbar-vertical-content scrollbar">
+            <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
+                <li class="nav-item">
+                
+                	<!-- parent pages-->
+                    <a class="nav-link" th:classappend ="${current == '/dashboard'} ? 'active' : ''"  href="/dashboard" role="button" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-tachometer-alt"></span></span><span class="nav-link-text ps-1">대시보드</span>
+                        </div>
+                    </a>
+                
+                    <!-- parent pages -->
+                    <a class="nav-link" th:classappend ="${current == '/sample'} ? 'active' : ''"  href="/group" role="button" data-bs-toggle="" aria-expanded="false" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="far fa-file-alt"></span></span><span class="nav-link-text ps-1">시료 결과</span>
+                        </div>
+                    </a>
+                    
+                </li>
+                
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <!-- label-->
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">관리자</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider" />
+                        </div>
+                    </div>
+                    
+                    <!-- parent pages-->
+                    <a class="nav-link"  href="/actionLog" th:classappend ="${current == '/actionLog'} ? 'active' : ''" role="button" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-code"></span></span><span class="nav-link-text ps-1">코드 관리</span>
+                        </div> 
+                    </a>
+                    
+                    <!-- parent pages-->
+                    <a class="nav-link" th:classappend ="${current == '/company'} ? 'active' : ''"  href="/company" role="button" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-network-wired"></span></span><span class="nav-link-text ps-1">업체 관리</span>
+                        </div>
+                    </a>
+                    
+                    <!-- parent pages-->
+                    <a class="nav-link"  href="/userManage" th:classappend ="${current == '/userManage'} ? 'active' : ''" role="button" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-user-cog"></span></span><span class="nav-link-text ps-1">사용자 관리</span>
+                        </div> 
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- End of Left Navbar -->
+</body>
+</html>

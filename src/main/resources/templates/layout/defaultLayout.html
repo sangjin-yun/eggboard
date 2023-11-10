@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta name="theme-color" content="#0b1727">
+
+<!-- ===============================================-->
+<!--    Document Title-->
+<!-- ===============================================-->
+<title>계란자조금</title>
+
+<!-- ===============================================-->
+<!--    Favicon And Styles-->
+<!-- ===============================================-->
+<link rel="shortcut icon" type="image/x-icon" th:href="@{/image/egg.png}">
+<link rel="stylesheet" th:href="@{/vendor/overlayscrollbars/OverlayScrollbars.css}">
+<link rel="stylesheet" th:href="@{/vendor/select2/select2.min.css}">
+<link rel="stylesheet" th:href="@{/css/noto-sans-kr.css}">
+<link rel="stylesheet" th:href="@{/css/theme.css}">
+<link rel="stylesheet" th:href="@{/css/custom.css}">
+<link rel="stylesheet" th:href="@{/vendor/jquery/jquery-ui.css}">
+
+<!-- calendar --><link rel="stylesheet" th:href="@{/vendor/daterangepicker/daterangepicker.css}">
+<!-- toastr --><link rel="stylesheet" th:href="@{/vendor/toastr/toastr.css}" />
+<!-- datatable --><link rel="stylesheet" th:href="@{/vendor/dataTables/datatables.css}">
+<!-- icons --><link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap-icons.css}">
+
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/jquery/jquery-ui.min.js}"></script>
+<script th:src="@{/vendor/jquery/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/vendor/select2/select2.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/popper.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/anchorjs/anchor.min.js}"></script>
+<script th:src="@{/vendor/is/is.min.js}"></script>
+<script th:src="@{/vendor/fontawesome/all.min.js}"></script>
+<script th:src="@{/vendor/lodash/lodash.min.js}"></script>
+<script th:src="@{/vendor/moment/moment.min.js}"></script>
+<script th:src="@{/vendor/overlayscrollbars/OverlayScrollbars.js}"></script>
+
+<script th:src="@{/js/theme.js}"></script>
+<script th:src="@{/js/config.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/footer.js}"></script> 
+
+<!-- event --><script th:src="@{/js/eventsource.min.js}"></script>
+<!-- calendar --><script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
+<!-- toastr --><script th:src="@{/vendor/toastr/toastr.js}"></script>
+<!-- list --><script th:src="@{/vendor/list/list.min.js}"></script>
+<!-- datatable --><script th:src="@{/vendor/dataTables/datatables.js}"></script>
+
+</head>
+<body>
+    <main class="main" id="top">
+        <div class="container-fluid" data-layout="container">
+
+            <!-- ===============================================-->
+            <!--    Left Navbar-->
+            <!-- ===============================================-->
+            <nav th:replace="fragments/leftNavbar :: leftNavbar"></nav>
+            <!-- ===============================================-->
+            <!--    End of Left Navbar-->
+            <!-- ===============================================-->
+
+            <div class="content">
+
+                <!-- ===============================================-->
+                <!--    Top Navbar-->
+                <!-- ===============================================-->
+                <nav th:replace="fragments/topNavbar :: topNavbar"></nav>
+                <!-- ===============================================-->
+                <!--    End of Top Navbar-->
+                <!-- ===============================================-->
+                
+                <!-- ===============================================-->
+                <!--    Main Content-->
+                <!-- ===============================================-->
+                <th:block layout:fragment="content"></th:block>
+                <!-- ===============================================-->
+                <!--    End of Main Content-->
+                <!-- ===============================================-->
+                
+                <!-- ===============================================-->
+                <!--    Footer-->
+                <!-- ===============================================-->
+                <footer th:replace="fragments/footer :: footer"></footer>
+                <!-- ===============================================-->
+                <!--    End of Top Footer-->
+                <!-- ===============================================-->
+            </div>
+        </div>
+    </main>
+</body>
+</html>

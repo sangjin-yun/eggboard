@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<style>
+#podTable_filter label{
+        font-size: 15px;
+        display: inline-block;
+        float: right;
+        margin-left:10px;
+}
+.footer{
+        top: 1900px;
+}
+</style>
+<meta charset="UTF-8">
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    let userRole = /*[[ ${userRole} ]]*/'';
+/*]]>*/
+</script>
+
+<link rel="stylesheet" th:href="@{/vendor/vis/vis-network.min.css}">
+<script th:src="@{/vendor/vis/vis-network.min.js}"></script>
+<script th:src="@{/vendor/sortable/Sortable.min.js}"></script>
+<script th:src="@{/vendor/sortable/jquery-sortable.js}"></script>
+<script th:src="@{/js/topology.js}"></script>
+</head>
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb" style="margin-bottom: 10px; font-size: 20px;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page" ><a href="javascript:location.reload();" chkI18n="menu.topology"></a></li>
+      </ol>
+    </nav>
+    <div id="wrapperDiv">
+    <div class="card">
+        <div class="card-header border-bottom"  style="padding: 20px;">
+            <h5 class="mb-0" style="display: inline-block;" chkI18n="menu.topology"></h5>
+            
+            <button class="btn btn-outline-success mr-1 mb-1" type="button" style="margin-left: 10px;" 
+                onclick="javascript:topology.nodeTopology();" chkI18n="button.save">
+            </button>
+            
+            <div style="display: inline-block; float:right;">
+                <div class="form-group" style="display: inline-block; margin-right: 10px;">
+                    <select class="form-control" id="tpModeBox" onchange="topology.modeChange(this.value);">
+                        <option value="hierarchy" chkI18n="table.hierarchy" selected></option>
+                        <option value="network" chkI18n="table.network"></option>
+                        <option value="groupView" chkI18n="table.groupView"></option>
+                    </select>
+                </div>
+                
+                <a href="javascript:topology.showAndhideArea('dash');">
+                    <span class="fas fa-minus mr-1" id="span_dash" data-fa-transform="shrink-3"></span>
+                </a>
+            </div>
+        </div>
+        <div class="card-body" style="padding: 0.1rem; height: 700px; display: inline-flex;" id="div_dash">
+            <div id="topology" style="height: 100%; width:100%; display: inline-block;"></div>
+        </div>
+    </div>
+    </div>
+    
+</section>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

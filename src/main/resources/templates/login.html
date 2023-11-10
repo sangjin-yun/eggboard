@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta name="theme-color" content="#0b1727">
+
+<!-- ===============================================-->
+<!--    Document Title-->
+<!-- ===============================================-->
+<title>계란자조금</title>
+
+<!-- ===============================================-->
+<!--    Favicon And Styles-->
+<!-- ===============================================-->
+<link rel="shortcut icon" type="image/x-icon" th:href="@{/image/egg.png}">
+<link rel="stylesheet" th:href="@{/css/theme.css}">
+<link rel="stylesheet" th:href="@{/css/noto-sans-kr.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+<!-- toastr -->
+<link rel="stylesheet" th:href="@{/vendor/toastr/toastr.css}" />
+
+
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script th:src="@{/vendor/jquery/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/config.js}"></script>
+<script th:src="@{/vendor/overlayscrollbars/OverlayScrollbars.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/popper.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/anchorjs/anchor.min.js}"></script>
+<script th:src="@{/vendor/is/is.min.js}"></script>
+<script th:src="@{/vendor/fontawesome/all.min.js}"></script>
+<script th:src="@{/vendor/lodash/lodash.min.js}"></script>
+<script th:src="@{/vendor/moment/moment.min.js}"></script>
+<script defer th:src="@{/js/theme.js}"></script>
+<!-- toastr -->
+<script th:src="@{/vendor/toastr/toastr.js}"></script>
+<script th:src="@{/js/login.js}" ></script>
+
+</head>
+<body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+        <div class="container" data-layout="container-fluid">
+            <div class="row flex-center min-vh-100 py-6">
+                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <span class="d-flex flex-center mb-4">
+                        <img class="me-2" th:src="@{/image/egg.png}" alt="" width="58" />
+                        <span class="font-sans-serif fw-bolder fs-5 d-inline-block" style="font-weight: 700 !important;">계란자조금</span>
+                    </span>
+                    <div class="card">
+                        <div class="card-body p-4 p-sm-5">
+                            <div class="row flex-between-center mb-2">
+                                <div class="col-auto">
+                                    <h5>로그인</h5>
+                                </div>
+                            </div>
+                            <form method="post" onsubmit="return false;">
+                                <div class="mb-3 validate-input" data-validate="UserID is required">
+                                    <input class="form-control check-input" type="text" name="userId" placeholder="아이디" onfocus="hideValidate(this);"/><span class="alert-input"></span>
+                                </div>
+                                <div class="mb-3 validate-input" data-validate="Password is required">
+                                    <input class="form-control check-input" type="password" name="password" placeholder="비밀번호" onfocus="hideValidate(this);" autocomplete="false"/><span class="alert-input"></span>
+                                </div>
+                                <div class="row flex-between-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-0">
+                                            <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe"/>
+                                            <label class="form-check-label mb-0" for="rememberMe" >아이디 저장</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a class="fs--1" href="/forgot">비빌번호 찾기</a>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-primary d-block w-100 mt-3" onclick="goLogin();" >로그인</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+</body>
+</html>

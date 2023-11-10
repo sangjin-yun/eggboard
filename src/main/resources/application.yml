@@ -1,0 +1,174 @@
+spring:
+  profiles:
+    group:
+      "dev": "dev,common"
+      "prod": "prod,common"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  
+  messages:
+        basename: i18n.messages
+        encoding: UTF-8
+  
+# Postgresql
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://127.0.0.1:5432/egg_board
+    username: postgres
+    password: sdplex1!
+    
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      
+# RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+# Thymeleaf
+  thymeleaf:
+    cache: false
+    
+# Devtools
+  devtools:
+    livereload:
+      enabled: true
+
+# Notification Event Timeout(ms) 10분
+events:
+  connect:
+#    timeout: 60000
+# 10초
+    timeout: 10000
+  sse:
+    timeout: 10000
+    
+server:
+  port: 8020
+  shutdown: graceful
+  tomcat:
+    uri-encoding: UTF-8
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+    
+logging:
+  level:
+    '[com.sdplex.oncue]': DEBUG
+    '[org.springframework]': INFO
+    '[org.springframework.data.elasticsearch.client.WIRE]': TRACE
+    
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+local:
+  path: C:\\nodeList
+  jsPath : C:/nodeList/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+  messages:
+        basename: i18n.messages
+        encoding: UTF-8
+  
+# Postgresql
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://127.0.0.1:5432/egg_board
+    username: sdplex
+    password: sdplex1!
+    
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      
+# RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+# Thymeleaf
+  thymeleaf:
+    cache: false
+    
+# Devtools
+  devtools:
+    livereload:
+      enabled: true
+
+# Notification Event Timeout(ms) 10분
+events:
+  connect:
+#    timeout: 60000
+# 10초
+    timeout: 10000
+  sse:
+    timeout: 10000
+    
+server:
+  port: 8020
+  shutdown: graceful
+  tomcat:
+    uri-encoding: UTF-8
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+    
+logging:
+  level:
+    '[com.sdplex.oncue]': DEBUG
+    '[org.springframework]': INFO
+    '[org.springframework.data.elasticsearch.client.WIRE]': TRACE
+    
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+local:
+  path: /home/sdplex/nodeList
+  jsPath : /home/sdplex/nodeList/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "common"
+      
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        
+ztadb:
+  url: jdbc:postgresql://192.168.20.105:5432/portal
+  username: postgres
+  password: sdplex1!

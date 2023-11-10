@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<meta charset="UTF-8">
+
+<script th:inline="javascript">
+    
+</script>
+
+<script th:src="@{/js/userManage.js}"></script>
+
+</head>
+
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb" style="margin-bottom: 10px; font-size: 20px;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page" ><a href="javascript:location.reload();" >사용자 관리</a></li>
+      </ol>
+    </nav>
+    <div class="card">
+        <div class="card-body overflow-hidden p-lg-6" style="padding: 1rem !important;">
+            <div class="row align-items-center">
+                
+                <div class="card-header border-bottom"  style="padding: 20px; margin-top: -10px;">
+                    <div class="col-auto align-self-center">
+                        <div class ="col-auto align-self-center" style="display: inline-block;">
+                            <h5 class="mb-0" chkI18n="user.title">사용자 목록</h5>
+                        </div>
+                        <button class="btn btn-outline-primary mr-1 mb-1" type="button" style="float: right;" onclick="userManage.addModal();">등록</button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive scrollbar">
+                    <table class="table table-striped overflow-hidden">
+                        <thead>
+                            <tr class="btn-reveal-trigger">
+                                <th scope="col">번호</th>
+                                <th scope="col">아이디</th>
+                                <th scope="col">이름</th>
+                                <th scope="col">권한</th>
+                                <th scope="col">마지막 로그인 일시</th>
+                                <th scope="col">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dynamicTbody">
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- userDeleteModal -->
+    <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="userDeleteModalLabel">사용자 삭제</h5>
+          </div>
+          <div class="modal-body">
+            <p id="userDeleteP"></p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" id="userDeleteId" value=""/>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal" onclick="$('#userDeleteModal').modal('hide');">취소</button>
+            <button class="btn btn-outline-primary btn-sm" type="button" onclick="userManage.delete();">확인</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- userAddModal -->
+    <div class="modal fade" id="userSaveModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="userSaveModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="userSaveModalLabel">사용자 등록</h5>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="actionType" value=""/>
+            <input type="hidden" id="orgPassword" value=""/>
+              <div class="form-group">
+                <label for="userId" class="col-form-label">아이디</label>
+                <input type="text" class="form-control" id="userId" autocomplete='off' onkeyup="allowEng(this)" onkeydown="allowEng(this)">
+              </div>
+              <div class="form-group">
+                <label for="name" class="col-form-label">비밀번호</label>
+                <input type="password" class="form-control" id="password" autocomplete='off'>
+              </div>
+              <div class="form-group">
+                <label for="name" class="col-form-label">이름</label>
+                <input type="text" class="form-control" id="name" autocomplete='off' onkeyup="allowEngKor(this)" onkeydown="allowEngKor(this)">
+              </div>
+              <div class="form-group">
+                <label for="role" class="col-form-label">권한</label>
+                <select class="form-control" id="role">
+                    <option value="ROLE_USER" selected>USER</option>
+                    <option value="ROLE_ADMIN">ADMIN</option>
+                </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onclick="$('#userSaveModal').modal('hide');">취소</button>
+            <button type="button" class="btn btn-outline-primary" onclick="userManage.save();">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+</section>
+
+
+
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

@@ -1,0 +1,78 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.sdplex.egg'
+version = '2.0.0-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '4.4.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation 'jakarta.json:jakarta.json-api:2.0.1'
+    
+    // springdoc-openapi
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.12'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-data-rest', version: '1.5.12'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.5.12'
+
+    // http client & sse
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+    implementation group: 'com.launchdarkly', name: 'okhttp-eventsource', version: '2.5.0'
+
+    // thymeleaf layout dialect
+    implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.0.0'
+
+    // expiringmap - 휘발성 맵
+    implementation group: 'net.jodah', name: 'expiringmap', version: '0.5.10'
+    
+    // hibernate-type
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.3.Final'
+
+    // json java.time.LocalDateTime support
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    
+    implementation 'io.github.hakky54:sslcontext-kickstart:7.4.5'
+    
+    // spring 초기 설정
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    compileOnly 'org.projectlombok:lombok'
+    
+    
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23'
+    runtimeOnly 'org.postgresql:postgresql'
+    
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+    
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
