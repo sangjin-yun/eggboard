@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sdplex.egg.domain.Company;
 import com.sdplex.egg.domain.User;
 import com.sdplex.egg.domain.security.SecurityUser;
 import com.sdplex.egg.dto.request.UserRequest;
@@ -47,15 +48,11 @@ public class UserService implements UserDetailsService {
     
     @Transactional
     public List<UserResponse> findAllUsers(String userId) {
-        List<User> users = userRepository.findAll().stream()
-                                                  .map(user -> user)
+        List<UserResponse> users = userRepository.findAll().stream()
+        											.map(user -> UserResponse.of(user))
+        											.filter(user -> !user.getUserId().equals(userId) && !user.getUserId().equals("admin"))
                                                   .collect(Collectors.toCollection(ArrayList::new));
-
-        return new ArrayList<User>(users).stream()
-                                         .map(user -> UserResponse.of(user))
-                                         .filter(user -> !user.getUserId().equals(userId) && !user.getUserId().equals("admin"))
-                                         .sorted((v1, v2) -> v1.getUserId().compareTo(v2.getUserId()))
-                                         .collect(Collectors.toList());
+        return users;
     }
 
     @Transactional
@@ -81,5 +78,9 @@ public class UserService implements UserDetailsService {
             return true;
         }
     }
+
+	public UserResponse findById(String userId) {
+		return userRepository.findById(userId).map(user -> UserResponse.of(user)).orElseThrow(() -> new UsernameNotFoundException(userId));
+	}
     
 }

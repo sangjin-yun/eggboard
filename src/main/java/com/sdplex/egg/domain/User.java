@@ -6,11 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,13 +18,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @author lee
  *
  */
-@ToString(exclude = {"company"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -51,16 +45,12 @@ public class User extends BaseEntity {
 	@Column(nullable = false)
 	private Role role;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "companyIdx", foreignKey = @ForeignKey(name = "user_fkey_company"))
-    private Company company;
-
 	public void updateLastLogin() {
 	    this.lastLoginAt = LocalDateTime.now();
 	}
 
 	@Builder
-	public User(String userId, String name, Role role, String password, String orgPassword, Company company) {
+	public User(String userId, String name, Role role, String password, String orgPassword) {
 	    this.userId = userId;
 	    if(StringUtils.isEmpty(password)) {
 	        this.password = orgPassword;
@@ -69,7 +59,6 @@ public class User extends BaseEntity {
 	    }
 	    this.name = name;
 	    this.role = role;
-	    this.company = company;
 	}
 
 

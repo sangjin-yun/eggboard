@@ -24,7 +24,7 @@ import lombok.ToString;
  * @author lee
  *
  */
-@ToString(exclude = {"users", "dataLoggers","samples"})
+@ToString(exclude = {"dataLoggers","samples"})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -61,10 +61,6 @@ public class Company extends BaseEntity {
 	
 	@Column(nullable = false, columnDefinition = "varchar(1) defalut 'N")
 	private String deleteYn; // 삭제여부
-	
-	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    @OrderBy("userId")
-    private List<User> users;
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @OrderBy("dataLoggerIdx")

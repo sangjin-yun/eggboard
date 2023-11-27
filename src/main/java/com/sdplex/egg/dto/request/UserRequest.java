@@ -16,6 +16,4 @@ public class UserRequest {
     private String type;
     private Role role;
 
-
-
 }

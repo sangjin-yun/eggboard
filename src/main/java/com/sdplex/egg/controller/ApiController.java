@@ -101,8 +101,8 @@ public class ApiController {
     }
     
     @GetMapping("/userManage/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable String userId){
-        User user = userService.findByUserId(userId);
+    public ResponseEntity<UserResponse> getUser(@PathVariable String userId){
+    	UserResponse user = userService.findById(userId);
         return ResponseEntity.ok(user);
     }
     

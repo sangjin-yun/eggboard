@@ -27,14 +27,13 @@ public class UserResponse {
 
 	private Role role;
 	@Builder
-	public UserResponse(String userId, String name, String password, LocalDateTime createdDate, LocalDateTime lastLoginAt, Role role ) {
+	public UserResponse(String userId, String name, String password, LocalDateTime createdDate, LocalDateTime lastLoginAt, Role role) {
 	    this.userId = userId;
 	    this.name = name;
         this.password = password;
         this.createdDate = createdDate;
         this.lastLoginAt = lastLoginAt;
         this.role = role;
-
 	}
 
 	public static UserResponse of(User user) {
