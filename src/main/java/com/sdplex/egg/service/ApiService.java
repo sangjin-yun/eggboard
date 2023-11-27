@@ -10,13 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sdplex.egg.domain.Company;
+import com.sdplex.egg.domain.Germ;
+import com.sdplex.egg.domain.HaughUnit;
+import com.sdplex.egg.domain.Sample;
 import com.sdplex.egg.dto.response.CompanyResponse;
 import com.sdplex.egg.dto.response.DataLoggerResponse;
+import com.sdplex.egg.dto.response.GermResponse;
 import com.sdplex.egg.dto.response.HaughUnitResponse;
 import com.sdplex.egg.dto.response.MeteorologicalDataResponse;
 import com.sdplex.egg.dto.response.SampleResponse;
 import com.sdplex.egg.repository.CompanyRepository;
 import com.sdplex.egg.repository.DataLoggerRepository;
+import com.sdplex.egg.repository.GermRepository;
 import com.sdplex.egg.repository.HaughUnitRepository;
 import com.sdplex.egg.repository.MeteorologicalDataRepository;
 import com.sdplex.egg.repository.SampleRepository;
@@ -40,6 +45,8 @@ public class ApiService {
 	private final DataLoggerRepository dataLoggerRepository;
 	
 	private final MeteorologicalDataRepository meteorologicalDataRepository;
+	
+	private final GermRepository germRepository;
 	
 	public Map<String, Object> dashBoardCompanyList() {
 		Map<String, Object> returnMap = new HashMap<>();
@@ -123,5 +130,62 @@ public class ApiService {
 		return CompanyResponse.from(companyRepository.save(company));
 	}
 
+	public List<SampleResponse> getSampleList() {
+		return sampleRepository.findAll(Sort.by(Sort.Direction.ASC, "sampleOrder"))
+				.stream()
+				.map(SampleResponse::from)
+				.collect(Collectors.toList());
+	}
+
+	public List<SampleResponse> sampleDelete(Long sampleOrder) {
+		sampleRepository.deleteById(sampleOrder);
+		return sampleRepository.findAll(Sort.by(Sort.Direction.ASC, "sampleOrder"))
+				.stream()
+				.map(SampleResponse::from)
+				.collect(Collectors.toList());
+	}
+	
+	public Map<String, Object> getSample(Long sampleOrder) {
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("sample", SampleResponse.from(sampleRepository.findById(sampleOrder).get()));
+		List<HaughUnitResponse> huList = haughUnitRepository.findAll(Sort.by(Sort.Direction.ASC, "haughUnitOrder"))
+				.stream()
+				.map(HaughUnitResponse::from)
+				.filter(haugh -> haugh.getSampleOrder().equals(sampleOrder))
+				.collect(Collectors.toList());
+		returnMap.put("haughUnit", huList);
+		List<GermResponse> germList = germRepository.findAll(Sort.by(Sort.Direction.ASC, "germOrder"))
+				.stream()
+				.map(GermResponse::from)
+				.filter(germ -> germ.getSampleOrder().equals(sampleOrder))
+				.collect(Collectors.toList());
+		returnMap.put("germ", germList);
+		
+		return returnMap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> sampleSave(Map<String, Object> param) {
+		Map<String, Object> sample = (Map<String, Object>) param.get("sample");
+		List<Map<String, Object>> haughList = (List<Map<String, Object>>) param.get("haugh");
+		List<Map<String, Object>> germList = (List<Map<String, Object>>) param.get("germ");
+		
+		if(null != String.valueOf(sample.get("sampleOrder")) && !"".equals(String.valueOf(sample.get("sampleOrder")))) {
+			sampleRepository.deleteById(Long.parseLong(String.valueOf(sample.get("sampleOrder"))));
+		}
+		
+		Sample result = sampleRepository.save(Sample.of(sample, Company.of(sample)));
+		for(Map<String, Object> haugh : haughList) {
+			haugh.put("sampleOrder", result.getSampleOrder());
+			haughUnitRepository.save(HaughUnit.of(haugh, result));
+		}
+		for(Map<String, Object> germ : germList) {
+			germ.put("sampleOrder", result.getSampleOrder());
+			germRepository.save(Germ.of(germ, result));
+		}
+		
+		return param;
+	}
+	
     
 }

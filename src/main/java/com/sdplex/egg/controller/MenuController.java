@@ -27,9 +27,17 @@ public class MenuController {
         return "view/dashboard";
     }
 	
+	@GetMapping("/sample")
+    @Operation(summary = "시료결과")
+    public String sample(Model model) {
+		model.addAttribute("companyList", apiService.getCompanyList());
+        model.addAttribute("current", "/sample");
+        return "view/sample";
+    }
+	
     @GetMapping("/code")
     @Operation(summary = "코드관리")
-    public String alarmBox(Model model) {
+    public String code(Model model) {
         model.addAttribute("current", "/code");
         return "view/code";
     }

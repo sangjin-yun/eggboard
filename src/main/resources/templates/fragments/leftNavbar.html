@@ -30,9 +30,16 @@
                             <span class="nav-link-icon"><span class="fas fa-tachometer-alt"></span></span><span class="nav-link-text ps-1">대시보드</span>
                         </div>
                     </a>
+                    
+                    <!-- parent pages-->
+                    <a class="nav-link" th:classappend ="${current == '/energy'} ? 'active' : ''"  href="/#" role="button" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-calculator"></span></span><span class="nav-link-text ps-1">에너지 편익분석</span>
+                        </div>
+                    </a>
                 
                     <!-- parent pages -->
-                    <a class="nav-link" th:classappend ="${current == '/sample'} ? 'active' : ''"  href="/group" role="button" data-bs-toggle="" aria-expanded="false" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')">
+                    <a class="nav-link" th:classappend ="${current == '/sample'} ? 'active' : ''"  href="/sample" role="button" data-bs-toggle="" aria-expanded="false" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><span class="far fa-file-alt"></span></span><span class="nav-link-text ps-1">시료 결과</span>
                         </div>

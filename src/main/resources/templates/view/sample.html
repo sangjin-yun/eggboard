@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<head>
+<meta charset="UTF-8">
+<style>
+#downTable_filter{
+        margin-top: 10px;
+            float: right;
+            width: 125%;
+}
+#downTable_filter label{
+        font-size: 17px;
+        display: inline-block;
+        float: right;
+}
+#downTable_filter label input{
+        width: 300px;
+        height: 35px;
+}
+#downTable_paginate{
+        margin-top: 10px;
+        margin-bottom: 15px;
+}
+
+#downTable_length{
+        margin-top: 10px;
+}
+#downTable_length label{
+        font-size: 17px;
+}
+</style>
+<script th:inline="javascript">
+
+</script>
+
+<script th:src="@{/js/sample.js}"></script>
+
+</head>
+<body>
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<section layout:fragment="content" class="p-0">
+    <nav aria-label="breadcrumb" style="--falcon-breadcrumb-divider: '»'; margin-bottom: 10px; font-size: 20px;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><a href="javascript:location.reload();">시료 결과</a></li>
+      </ol>
+    </nav>
+    <div class="card">
+        <div class="card-body overflow-hidden p-lg-6" style="padding: 1rem !important;">
+            <div class="row align-items-center">
+                
+                <div class="card-header border-bottom"  style="padding: 20px; margin-top: -10px;">
+                    <div class="col-auto align-self-center">
+                        <div class ="col-auto align-self-center" style="display: inline-block;">
+                            <h5 class="mb-0">시료 결과 목록</h5>
+                        </div>
+                        <button class="btn btn-outline-primary mr-1 mb-1" type="button" style="float: right;" onclick="sample.showModal('I');">등록</button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive scrollbar">
+                    <table class="table table-striped overflow-hidden" id="downTable">
+                        <thead>
+                            <tr class="btn-reveal-trigger">
+                                <th>번호</th>
+                                <th>시료번호</th>
+                                <th>생산농가(난각번호)</th>
+                                <th>계란등급</th>
+                                <th>산란일자</th>
+                                <th>채취일시</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dynamicTbody">
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- DeleteModal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">시료 결과 삭제</h5>
+          </div>
+          <div class="modal-body">
+            <p>해당 시료 결과를 삭제 하시겠습니까?</p>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" id="deleteId" value=""/>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal" onclick="$('#deleteModal').modal('hide');">취소</button>
+            <button class="btn btn-outline-primary btn-sm" type="button" onclick="sample.delete();">확인</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- userAddModal -->
+    <div class="modal fade" id="saveModal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+      <div class="modal-dialog" style="min-width: 70%;" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="saveModalLabel">시료채취 확인서</h5>
+          </div>
+          <form name="sampleForm" id="sampleForm" method="post">
+              <div class="modal-body">
+                  <input type="hidden" name="deleteYn" id="deleteYn" value="N"/>
+                  <input type="hidden" name="sampleOrder" id="sampleOrder" value=""/>
+                  <div class="form-group"  style="display:inline-block; width:19%;">
+                    <label for="companyIdx" class="col-form-label"><span style="color: red;">*</span>업체</label>
+                    <select class="form-control" id="companyIdx" name="companyIdx">
+                        <option value=""><업체 선택></option>
+                        <option th:value="${companyList.getCompanyIdx()}" th:each="companyList:${companyList}" th:text="${companyList.getAlias()}"
+                            th:if="${companyList.getShowYn() == 'Y'}"></option>
+                    </select>
+                  </div>
+                  <div class="form-group"  style="display:inline-block; width:19%;">
+                    <label for="washYn" class="col-form-label"><span style="color: red;">*</span>세척 여부</label>
+                    <select class="form-control" id="washYn" name="washYn">
+                        <option value="Y" selected>세척란</option>
+                        <option value="N">비세척란</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="sampleNumber" class="col-form-label"><span style="color: red;">*</span>시료번호</label>
+                    <input type="text" class="form-control" name="sampleNumber" id="sampleNumber" autocomplete="off" placeholder="WE001"/>
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="eggGrade" class="col-form-label"><span style="color: red;">*</span>계란등급</label>
+                    <select class="form-control" id="eggGrade" name="eggGrade">
+                        <option value="1+등급" selected>1+등급</option>
+                        <option value="1등급">1등급</option>
+                        <option value="2등급">2등급</option>
+                        <option value="3등급">3등급</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="spawningDate" class="col-form-label"><span style="color: red;">*</span>산란일자</label>
+                    <input type="text" class="form-control" name="spawningDate" id="spawningDate" placeholder="20231231" readonly>
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="eggNumber" class="col-form-label"><span style="color: red;">*</span>난각번호</label>
+                    <input type="text" class="form-control" name="eggNumber" id="eggNumber" placeholder="AW38B">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="eggFarmName" class="col-form-label"><span style="color: red;">*</span>생산농가</label>
+                    <input type="text" class="form-control" name="eggFarmName" id="eggFarmName" placeholder="에스디농장">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:57.5%;">
+                    <label for="eggFarmAddr" class="col-form-label">생산농가 주소</label>
+                    <input type="text" class="form-control" name="eggFarmAddr" id="eggFarmAddr" placeholder="경기도 성남시 수정구 창업로 43">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="collectionDate" class="col-form-label"><span style="color: red;">*</span>시료채취 일시</label>
+                    <input type="text" class="form-control" name="collectionDate" id="collectionDate" placeholder="20231227150000" readonly>
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:19%;">
+                    <label for="collectionInfo" class="col-form-label"><span style="color: red;">*</span>시료채취자</label>
+                    <input type="text" class="form-control" name="collectionInfo" id="collectionInfo" placeholder="홍길동">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:14.5%;">
+                    <label for="inTemp" class="col-form-label"><span style="color: red;">*</span>내기온도</label>
+                    <input type="text" class="form-control" name="inTemp" id="inTemp" placeholder="8.7">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:14.3%;">
+                    <label for="inRh" class="col-form-label"><span style="color: red;">*</span>내기습도</label>
+                    <input type="text" class="form-control" name="inRh" id="inRh" placeholder="50.8">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:14%;">
+                    <label for="deliveryTemp" class="col-form-label">배송온도</label>
+                    <input type="text" class="form-control" name="deliveryTemp" id="deliveryTemp" placeholder="10.3">
+                  </div>
+                  <div class="form-group" style="display:inline-block; width:14%;">
+                    <label for="deliveryRh" class="col-form-label">배송습도</label>
+                    <input type="text" class="form-control" name="deliveryRh" id="deliveryRh" placeholder="60.7">
+                  </div>
+                  
+              </div>
+          </form>
+          <div style="    display: flex;">
+              <div style="display: inline-block; width: 48%;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="saveModalLabel">호우유닛 측정결과</h5>
+                    <button type="button" class="btn btn-outline-info" style="vertical-align: baseline;" onclick="sample.addHaughForm();">추가</button>
+                  </div>
+                  <form name="haughForm" id="haughForm" method="post">
+                  </form>
+              </div>
+              <div style="display: inline-block; width: 48%;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="saveModalLabel">균 검사결과</h5>
+                    <button type="button" class="btn btn-outline-info" style="vertical-align: baseline;" onclick="sample.addGermForm();">추가</button>
+                  </div>
+                  <form name="germForm" id="germForm" method="post">
+                  </form>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" onclick="$('#saveModal').modal('hide');">취소</button>
+            <button type="button" class="btn btn-outline-primary" onclick="sample.validateForm();">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+</section>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+</body>
+</html>

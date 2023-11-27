@@ -21,6 +21,7 @@ import com.sdplex.egg.domain.User;
 import com.sdplex.egg.domain.security.SecurityUser;
 import com.sdplex.egg.dto.request.UserRequest;
 import com.sdplex.egg.dto.response.CompanyResponse;
+import com.sdplex.egg.dto.response.SampleResponse;
 import com.sdplex.egg.dto.response.UserResponse;
 import com.sdplex.egg.service.ApiService;
 import com.sdplex.egg.service.UserService;
@@ -45,6 +46,29 @@ public class ApiController {
     public ResponseEntity<Map<String, Object>> getDashBoardTotalChart(@AuthenticationPrincipal SecurityUser user){
         Map<String, Object> result = apiService.getDashBoardTotalChart();
         return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/sample")
+    public ResponseEntity<List<SampleResponse>> getSampleList(@AuthenticationPrincipal SecurityUser user){
+        return ResponseEntity.ok(apiService.getSampleList());
+    }
+    
+    @GetMapping("/sample/{sampleOrder}")
+    public ResponseEntity<Map<String,Object>> getSample(@AuthenticationPrincipal SecurityUser user
+    		, @PathVariable Long sampleOrder){
+        return ResponseEntity.ok(apiService.getSample(sampleOrder));
+    }
+    
+    @PostMapping("/sample/save")
+    public ResponseEntity<Map<String, Object>> sampleSave(@AuthenticationPrincipal SecurityUser user
+    		, @RequestBody Map<String, Object> param){
+        return ResponseEntity.ok(apiService.sampleSave(param));
+    }
+    
+    @DeleteMapping("/sample/delete/{sampleOrder}")
+    public ResponseEntity<List<SampleResponse>> sampleDelete(@AuthenticationPrincipal SecurityUser user
+    		, @PathVariable Long sampleOrder){
+        return ResponseEntity.ok(apiService.sampleDelete(sampleOrder));
     }
     
     @GetMapping("/company")

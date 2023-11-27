@@ -1,8 +1,8 @@
 window.onload = function () {
-      actionLog.init();
+      code.init();
 };
 
-var actionLog = (function (actionLog, $) {
+var code = (function (code, $) {
     /**************************************
      * Private 함수
      * ************************************/
@@ -84,31 +84,8 @@ var actionLog = (function (actionLog, $) {
     /**************************************
      * Public 함수
      * ************************************/
-    actionLog.init = function () {
-        getNoticeInfo();
-        if(langType == "ko"){
-            $("#alarmFilter").append('<option value="" selected>구분 선택</option>');
-            $("#alarmFilter").append("<option value='사용자 로그인' >사용자 로그인</option>");
-            $("#alarmFilter").append("<option value='스케쥴 설정' >스케쥴 설정</option>");
-            $("#alarmFilter").append("<option value='사용자 관리' >사용자 관리</option>");
-            $("#alarmFilter").append("<option value='로그 관리' >로그 관리</option>");
-            $("#alarmFilter").append("<option value='파드 관리' >파드 관리</option>");
-            $("#alarmFilter").append("<option value='노드 관리' >노드 관리</option>");
-            $("#alarmFilter").append("<option value='노드 그룹 관리' >노드 그룹 관리</option>");
-            $("#alarmFilter").append("<option value='스케쥴러' >스케쥴러</option>");
-            $("#alarmFilter").append("<option value='컨피그레이터' >컨피그레이터</option>");
-          }else{
-            $("#alarmFilter").append('<option value="" selected>Type Select</option>');
-            $("#alarmFilter").append("<option value='SCHEDULE_SETTING' >SCHEDULE_SETTING</option>");
-            $("#alarmFilter").append("<option value='USER_MANAGE' >USER_MANAGE</option>");
-            $("#alarmFilter").append("<option value='LOG_MANAGE' >LOG_MANAGE</option>");
-            $("#alarmFilter").append("<option value='POD_MANAGE' >POD_MANAGE</option>");
-            $("#alarmFilter").append("<option value='NODE_MANAGE' >NODE_MANAGE</option>");
-            $("#alarmFilter").append("<option value='NODE_GROUP_MANAGE' >NODE_GROUP_MANAGE</option>");
-            $("#alarmFilter").append("<option value='SCHEDULER' >SCHEDULER</option>");
-            $("#alarmFilter").append("<option value='CONFIGURATOR' >CONFIGURATOR</option>");
-        }
-        localize();
+    code.init = function () {
+        
     }
-    return actionLog;
-}) (window.actionLog || {}, $);
+    return code;
+}) (window.code || {}, $);

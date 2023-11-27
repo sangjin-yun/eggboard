@@ -26,7 +26,7 @@ import lombok.ToString;
 @Table(name = "haugh_unit")
 public class HaughUnit {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long haughUnitIdx; // 키
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -46,7 +46,7 @@ public class HaughUnit {
 	
 	@Builder
 	public HaughUnit(Map<String, Object> haugh, Sample sample) {
-		if(!"".equals(String.valueOf(haugh.get("haughUnitIdx")))) {
+		if(null != haugh.get("haughUnitIdx") && !"".equals(String.valueOf(haugh.get("haughUnitIdx")))) {
             this.haughUnitIdx = Long.parseLong(String.valueOf(haugh.get("haughUnitIdx")));
         }
 		this.sample = sample;

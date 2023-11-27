@@ -18,7 +18,7 @@ spring:
 # Postgresql
   datasource:
     hikari:
-      maximum-pool-size: 4
+      maximum-pool-size: 10
     url: jdbc:postgresql://127.0.0.1:5432/egg_board
     username: postgres
     password: sdplex1!

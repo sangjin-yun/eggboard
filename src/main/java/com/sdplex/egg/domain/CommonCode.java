@@ -38,8 +38,8 @@ public class CommonCode extends BaseEntity{
 	@Column(nullable = false)
 	private Long sortOrder; // 순서
 	
-	@Column(nullable = false, columnDefinition = "varchar(1)")
-	private String useYn; // 사용여부
+	@Column(nullable = false, columnDefinition = "varchar(1) default 'N' ")
+	private String deleteYn; // 사용여부
 	
 	@Builder
 	public CommonCode(Map<String, Object> code) {
@@ -49,7 +49,7 @@ public class CommonCode extends BaseEntity{
 		this.parentIdx = Long.parseLong(String.valueOf(code.get("parentIdx")));
 		this.name = (String) code.get("name");
 		this.sortOrder = Long.parseLong(String.valueOf(code.get("sortOrder")));
-		this.useYn = (String) code.get("useYn");
+		this.deleteYn = (String) code.get("deleteYn");
 	}
 	
 	public static CommonCode of(Map<String, Object> code) {

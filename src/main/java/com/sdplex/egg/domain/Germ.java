@@ -28,7 +28,7 @@ import lombok.ToString;
 public class Germ {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long germIdx; // 키
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +49,7 @@ public class Germ {
 	
 	@Builder
 	public Germ(Map<String, Object> germ, Sample sample) {
-		if(!"".equals(String.valueOf(germ.get("germIdx")))) {
+		if(null != germ.get("germIdx") && !"".equals(String.valueOf(germ.get("germIdx")))) {
             this.germIdx = Long.parseLong(String.valueOf(germ.get("germIdx")));
         }
 		this.sample = sample;

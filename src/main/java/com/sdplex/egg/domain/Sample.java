@@ -3,10 +3,13 @@ package com.sdplex.egg.domain;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +21,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -26,13 +30,14 @@ import lombok.ToString;
  */
 @ToString(exclude = {"company"})
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "sample")
 public class Sample extends BaseEntity{
 	
 	@Id
-	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long sampleOrder;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -75,17 +80,19 @@ public class Sample extends BaseEntity{
 	@Column(nullable = false)
 	private String collectionInfo; // 시료 수거자 정보
 	
-	@OneToMany(mappedBy = "sample", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sample", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("germIdx")
     private List<Germ> germs;
 	
-	@OneToMany(mappedBy = "sample", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sample", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("haughUnitIdx")
     private List<HaughUnit> haughUnit;
 	
 	@Builder
 	public Sample(Map<String, Object> sample, Company company) {
-		this.sampleOrder = Long.parseLong(String.valueOf(sample.get("sampleOrder")));
+		if(null != sample.get("sampleOrder") && !"".equals(String.valueOf(sample.get("sampleOrder")))) {
+			this.sampleOrder = Long.parseLong(String.valueOf(sample.get("sampleOrder")));
+		}
 		this.company = company;
 		this.washYn = (String) sample.get("washYn");
 		this.sampleNumber = (String) sample.get("sampleNumber");
@@ -93,11 +100,17 @@ public class Sample extends BaseEntity{
 		this.spawningDate = (String) sample.get("spawningDate");
 		this.eggGrade = (String) sample.get("eggGrade");
 		this.eggFarmName = (String) sample.get("eggFarmName");
-		this.eggFarmAddr = (String) sample.get("eggFarmAddr");
+		if(null != sample.get("eggFarmAddr") && !"".equals(String.valueOf(sample.get("eggFarmAddr")))) {
+			this.eggFarmAddr = (String) sample.get("eggFarmAddr");
+		}
 		this.inTemp = Double.parseDouble(String.valueOf(sample.get("inTemp")));
 		this.inRh = Double.parseDouble(String.valueOf(sample.get("inRh")));
-		this.deliveryTemp = Double.parseDouble(String.valueOf(sample.get("deliveryTemp")));
-		this.deliveryRh = Double.parseDouble(String.valueOf(sample.get("deliveryRh")));
+		if(null != sample.get("deliveryTemp") && !"".equals(String.valueOf(sample.get("deliveryTemp")))) {
+			this.deliveryTemp = Double.parseDouble(String.valueOf(sample.get("deliveryTemp")));
+		}
+		if(null != sample.get("deliveryRh") && !"".equals(String.valueOf(sample.get("deliveryRh")))) {
+			this.deliveryRh = Double.parseDouble(String.valueOf(sample.get("deliveryRh")));
+		}
 		this.collectionDate = (String) sample.get("collectionDate");
 		this.collectionInfo = (String) sample.get("collectionInfo");
 	}
