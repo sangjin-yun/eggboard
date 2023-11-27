@@ -73,6 +73,7 @@ var company = (function (company, $) {
             $("#addrGu").val(response.addrGu);
             $("#addrDong").val(response.addrDong);
             $("#addrDetail").val(response.addrDetail);
+            $("#etcInfo").val(response.etcInfo);
             $("input:radio[name='gpYn']:radio[value='"+response.gpYn+"']").prop('checked', true);
             $("input:radio[name='showYn']:radio[value='"+response.showYn+"']").prop('checked', true);
             $('#saveModal').modal('show');

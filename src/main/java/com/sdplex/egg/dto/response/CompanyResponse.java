@@ -29,9 +29,11 @@ public class CompanyResponse {
 	
 	private String deleteYn;
 	
+	private String etcInfo;
+	
 	public CompanyResponse(Long companyIdx,String name,String alias
 			,String gpYn, String showYn, String addrSi, String addrGu, String addrDong, String addrDetail
-			,String deleteYn) {
+			,String deleteYn, String etcInfo) {
 	    this.companyIdx = companyIdx;
 	    this.name = name;
         this.alias = alias;
@@ -42,6 +44,7 @@ public class CompanyResponse {
         this.addrDong = addrDong;
         this.addrDetail = addrDetail;
         this.deleteYn = deleteYn;
+        this.etcInfo = etcInfo;
 	}
 	
 	public static CompanyResponse from(Company company) {
@@ -56,6 +59,7 @@ public class CompanyResponse {
 	            ,company.getAddrDong()
 	            ,company.getAddrDetail()
 	            ,company.getDeleteYn()
+	            ,company.getEtcInfo()
 	            );
 	}
 }

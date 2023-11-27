@@ -62,6 +62,8 @@ public class Company extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "varchar(1) defalut 'N")
 	private String deleteYn; // 삭제여부
 	
+	private String etcInfo;
+	
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     @OrderBy("dataLoggerIdx")
     private List<DataLogger> dataLoggers;
@@ -84,6 +86,7 @@ public class Company extends BaseEntity {
 		this.addrDong = (String) company.get("addrDong");
 		this.addrDetail = (String) company.get("addrDetail");
 		this.deleteYn = (String) company.get("deleteYn");
+		this.etcInfo = (String) company.get("etcInfo");
 	}
 	
 	public static Company of(Map<String, Object> company) {
