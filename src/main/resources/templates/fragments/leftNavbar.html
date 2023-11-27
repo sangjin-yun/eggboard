@@ -32,7 +32,7 @@
                     </a>
                     
                     <!-- parent pages-->
-                    <a class="nav-link" th:classappend ="${current == '/energy'} ? 'active' : ''"  href="/#" role="button" data-bs-toggle="" aria-expanded="false">
+                    <a class="nav-link" th:classappend ="${current == '/energy'} ? 'active' : ''"  href="#" th:onclick="javascript:alert('준비중입니다.');" role="button" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon"><span class="fas fa-calculator"></span></span><span class="nav-link-text ps-1">에너지 편익분석</span>
                         </div>

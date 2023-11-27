@@ -15,14 +15,14 @@ public class HaughUnitResponse {
 	
 	private Long haughUnitOrder; // 호우유닛 테스트 차수
 	
-	private Long haughUnitLevel; // 호우유닛 검사 결과
+	private Double haughUnitLevel; // 호우유닛 검사 결과
 	
 	private String deliveryDate; // 시료전달 일시
 	
 	private String experimenterInfo; // 실험주관자 정보
 	
 	public HaughUnitResponse(Long haughUnitIdx, Long sampleOrder,Long haughUnitOrder
-			, Long haughUnitLevel, String deliveryDate, String experimenterInfo) {
+			, Double haughUnitLevel, String deliveryDate, String experimenterInfo) {
 		this.haughUnitIdx = haughUnitIdx;
 		this.sampleOrder = sampleOrder;
 		this.haughUnitOrder = haughUnitOrder;

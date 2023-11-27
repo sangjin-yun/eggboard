@@ -37,7 +37,7 @@ public class HaughUnit {
 	private Long haughUnitOrder; // 호우유닛 테스트 차수
 	
 	@Column(nullable = false)
-	private Long haughUnitLevel; // 호우유닛 검사 결과
+	private Double haughUnitLevel; // 호우유닛 검사 결과
 	
 	@Column(nullable = false)
 	private String deliveryDate; // 시료전달 일시
@@ -51,7 +51,7 @@ public class HaughUnit {
         }
 		this.sample = sample;
 		this.haughUnitOrder = Long.parseLong(String.valueOf(haugh.get("haughUnitOrder")));
-		this.haughUnitLevel = Long.parseLong(String.valueOf(haugh.get("haughUnitLevel")));
+		this.haughUnitLevel = Double.parseDouble(String.valueOf(haugh.get("haughUnitLevel")));
 		this.deliveryDate = (String) haugh.get("deliveryDate");
 		this.experimenterInfo = (String) haugh.get("experimenterInfo");
 	}

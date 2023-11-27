@@ -54,7 +54,7 @@ public class ApiService {
 		List<CompanyResponse> companyList = companyRepository.findAll(Sort.by(Sort.Direction.ASC, "companyIdx"))
 				.stream()
 				.map(CompanyResponse::from)
-				.filter(company -> company.getShowYn().equals("Y"))
+				.filter(company -> company.getShowYn().equals("Y") && company.getDeleteYn().equals("N"))
 				.collect(Collectors.toList());
 		returnMap.put("company", companyList);
 		

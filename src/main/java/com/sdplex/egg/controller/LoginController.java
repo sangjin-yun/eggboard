@@ -23,7 +23,7 @@ public class LoginController {
 	    log.debug("USER : {}", user);
 	    if (user != null) {
 	        log.debug("USER : {}", user);
-	        return "redirect:/topology";
+	        return "redirect:/dashboard";
 	    } else {
 	        return "redirect:/login";
 	    }
