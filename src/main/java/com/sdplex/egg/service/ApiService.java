@@ -9,16 +9,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sdplex.egg.domain.CommonCode;
 import com.sdplex.egg.domain.Company;
 import com.sdplex.egg.domain.Germ;
 import com.sdplex.egg.domain.HaughUnit;
 import com.sdplex.egg.domain.Sample;
+import com.sdplex.egg.dto.response.CommonCodeResponse;
 import com.sdplex.egg.dto.response.CompanyResponse;
 import com.sdplex.egg.dto.response.DataLoggerResponse;
 import com.sdplex.egg.dto.response.GermResponse;
 import com.sdplex.egg.dto.response.HaughUnitResponse;
 import com.sdplex.egg.dto.response.MeteorologicalDataResponse;
 import com.sdplex.egg.dto.response.SampleResponse;
+import com.sdplex.egg.repository.CommonCodeRepository;
 import com.sdplex.egg.repository.CompanyRepository;
 import com.sdplex.egg.repository.DataLoggerRepository;
 import com.sdplex.egg.repository.GermRepository;
@@ -47,6 +50,8 @@ public class ApiService {
 	private final MeteorologicalDataRepository meteorologicalDataRepository;
 	
 	private final GermRepository germRepository;
+	
+	private final CommonCodeRepository commonCodeRepository;
 	
 	public Map<String, Object> dashBoardCompanyList() {
 		Map<String, Object> returnMap = new HashMap<>();
@@ -182,6 +187,57 @@ public class ApiService {
 		for(Map<String, Object> germ : germList) {
 			germ.put("sampleOrder", result.getSampleOrder());
 			germRepository.save(Germ.of(germ, result));
+		}
+		
+		return param;
+	}
+
+	public List<CommonCodeResponse> getCodeList() {
+		return commonCodeRepository.findAll(Sort.by(Sort.Direction.ASC, "codeIdx"))
+				.stream()
+				.map(CommonCodeResponse::from)
+				.filter(comm -> comm.getDeleteYn().equals("N") && comm.getParentIdx() == 0)
+				.collect(Collectors.toList());
+	}
+
+	public Map<String, Object> getCode(Long codeIdx) {
+		Map<String, Object> returnMap = new HashMap<>();
+		CommonCodeResponse commResult = CommonCodeResponse.from(commonCodeRepository.findById(codeIdx).get());
+		returnMap.put("parentResult", commResult);
+		List<CommonCodeResponse> childCodeList = commonCodeRepository.findAll(Sort.by(Sort.Direction.ASC, "sortOrder"))
+																			.stream()
+																			.map(CommonCodeResponse::from)
+																			.filter(comm -> comm.getDeleteYn().equals("N") && comm.getParentIdx().equals(codeIdx))
+																			.collect(Collectors.toList());
+		returnMap.put("childResult", childCodeList);
+		return returnMap;
+	}
+
+	@Transactional
+	public CommonCodeResponse codeDelete(Long codeIdx) {
+		CommonCode result = commonCodeRepository.findById(codeIdx).get();
+		result.setDeleteYn("Y");
+		return CommonCodeResponse.from(result);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Map<String, Object> codeSave(Map<String, Object> param) {
+		Map<String, Object> parentCode = (Map<String, Object>) param.get("parentCode");
+		
+		parentCode.put("name", (String) parentCode.get("parentName"));
+		List<Map<String, Object>> childCodeList = (List<Map<String, Object>>) param.get("childCode");
+		
+		if(null != String.valueOf(parentCode.get("codeIdx")) && !"".equals(String.valueOf(parentCode.get("codeIdx")))) {
+			commonCodeRepository.deleteById(Long.parseLong(String.valueOf(parentCode.get("codeIdx"))));
+			commonCodeRepository.deleteByParentIdx(Long.parseLong(String.valueOf(parentCode.get("codeIdx"))));
+		}
+		
+		CommonCode result = commonCodeRepository.save(CommonCode.of(parentCode));
+		for(Map<String, Object> childCode : childCodeList) {
+			childCode.put("parentIdx", result.getCodeIdx());
+			childCode.put("deleteYn", "N");
+			commonCodeRepository.save(CommonCode.of(childCode));
 		}
 		
 		return param;

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdplex.egg.domain.Company;
-import com.sdplex.egg.domain.User;
 import com.sdplex.egg.domain.security.SecurityUser;
 import com.sdplex.egg.dto.request.UserRequest;
+import com.sdplex.egg.dto.response.CommonCodeResponse;
 import com.sdplex.egg.dto.response.CompanyResponse;
 import com.sdplex.egg.dto.response.SampleResponse;
 import com.sdplex.egg.dto.response.UserResponse;
@@ -69,6 +69,29 @@ public class ApiController {
     public ResponseEntity<List<SampleResponse>> sampleDelete(@AuthenticationPrincipal SecurityUser user
     		, @PathVariable Long sampleOrder){
         return ResponseEntity.ok(apiService.sampleDelete(sampleOrder));
+    }
+    
+    @GetMapping("/code")
+    public ResponseEntity<List<CommonCodeResponse>> getCodeList(@AuthenticationPrincipal SecurityUser user){
+        return ResponseEntity.ok(apiService.getCodeList());
+    }
+    
+    @GetMapping("/code/{codeIdx}")
+    public ResponseEntity<Map<String,Object>> getCode(@AuthenticationPrincipal SecurityUser user
+    		, @PathVariable Long codeIdx){
+        return ResponseEntity.ok(apiService.getCode(codeIdx));
+    }
+    
+    @PostMapping("/code/save")
+    public ResponseEntity<Map<String, Object>> codeSave(@AuthenticationPrincipal SecurityUser user
+    		, @RequestBody Map<String, Object> param){
+        return ResponseEntity.ok(apiService.codeSave(param));
+    }
+    
+    @PostMapping("/code/delete/{codeIdx}")
+    public ResponseEntity<CommonCodeResponse> codeDelete(@AuthenticationPrincipal SecurityUser user
+    		, @PathVariable Long codeIdx){
+        return ResponseEntity.ok(apiService.codeDelete(codeIdx));
     }
     
     @GetMapping("/company")

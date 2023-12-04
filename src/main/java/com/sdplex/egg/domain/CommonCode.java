@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 /**
  * @author lee
@@ -20,13 +21,14 @@ import lombok.ToString;
  */
 @ToString
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "common_code")
 public class CommonCode extends BaseEntity{
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long codeIdx; // 키
 	
 	@Column(nullable = false)
@@ -43,7 +45,7 @@ public class CommonCode extends BaseEntity{
 	
 	@Builder
 	public CommonCode(Map<String, Object> code) {
-		if(!"".equals(String.valueOf(code.get("codeIdx")))) {
+		if(null != code.get("codeIdx") && !"".equals(String.valueOf(code.get("codeIdx")))) {
             this.codeIdx = Long.parseLong(String.valueOf(code.get("codeIdx")));
         }
 		this.parentIdx = Long.parseLong(String.valueOf(code.get("parentIdx")));

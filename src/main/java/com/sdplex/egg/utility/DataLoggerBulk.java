@@ -23,8 +23,12 @@ public class DataLoggerBulk {
         "  (data_logger_idx, company_idx, sort_order, year, month, day, hour, minute, second, temp, rh) VALUES " +
         " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     
+    private static final String INSERT_WEATHER_DATA_SQL = "INSERT INTO meteorological_data" +
+            "  (idx, addr_dong, addr_gu, addr_si, day, hour, minute, second, month, year, temp, rh) VALUES " +
+            " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    
     public static void main(String[] argv) throws SQLException {
-    	//DataLoggerBulk csvInsert= new DataLoggerBulk();
+    	DataLoggerBulk csvInsert= new DataLoggerBulk();
     	
     	//List<List<String>> result = csvRead("E:\\meteorological\\logger_원성축산.csv");
     	//csvInsert.insertRecordG1(12872, 6, "경기도", "남양주시", "진접읍" , result);
@@ -35,33 +39,61 @@ public class DataLoggerBulk {
     	//List<List<String>> result = csvRead("E:\\meteorological\\logger_계성테이블.csv");
     	//csvInsert.insertRecordH1(1, 4, "경기도", "광주시", "광남1동" , result);
     	
-    	/*
-    	for(List<String> csvRow : result) {
-    		String year = csvRow.get(0).split("-")[0];
-    		String month = csvRow.get(0).split("-")[1];
-    		String day = csvRow.get(0).split("-")[2];
-    		Double temp = Double.parseDouble(csvRow.get(2));
-    		Double rh = Double.parseDouble(csvRow.get(3));
-    		
-    		String timeArr[] = csvRow.get(1).split(" ");
-    		List<String> tmpList = Arrays.asList(timeArr);
-    		String timeH = tmpList.get(1).split(":")[0];
-    		String timeM = tmpList.get(1).split(":")[1];
-    		String timeS = tmpList.get(1).split(":")[2];
-    		if("PM".equalsIgnoreCase(tmpList.get(0))) {
-    			if(!"12".equals(timeH)) {
-    				timeH = String.valueOf(Integer.parseInt(timeH)+12);
-    			}
-    		}else {
-    			if("12".equals(timeH)) {
-    				timeH = "00";
-    			}else if(!"11".equals(timeH) && !"10".equals(timeH)) {
-    				timeH = "0"+timeH;
-    			}
-    		}
-    		System.out.println(year+"::"+month+"::"+day+"::"+temp+"::"+rh+"::"+timeH+"::"+timeM+"::"+timeS);
-    	}
-    	*/
+    	//List<List<String>> result = csvRead("E:\\meteorological\\logger_20.csv");
+    	//csvInsert.insertRecordG1(57832, 1, "경기도", "평택시", "진위면" , result);
+    	
+    	List<List<String>> result = csvRead("E:\\meteorological\\서울특별시_송파구_오금동_202311.csv");
+    	csvInsert.insertRecordWeather(13249, "2023", "11", "서울특별시", "송파구", "오금동" , result);
+    }
+    
+    public void insertRecordWeather(
+    		long startIdx, String year,String month,String si, String gu, String dong, 
+    		List<List<String>> csvData) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_WEATHER_DATA_SQL)) {
+        	int hour = 0;
+        	for(List<String> csvRow : csvData) {
+        		int day = Integer.parseInt(csvRow.get(0));
+        		String dayStr = csvRow.get(0);
+        		if(day < 10) {
+        			dayStr = "0"+csvRow.get(0);
+        		}
+        		
+        		String hourStr = String.valueOf(hour);
+        		if(hour < 10) {
+        			hourStr = "0"+String.valueOf(hour);
+        		}
+        		
+        		Double temp = Double.parseDouble(csvRow.get(2));
+        		Double rh = Double.parseDouble(csvRow.get(3));
+        		
+        		// idx, addr_dong, addr_gu, addr_si, day, hour, minute, second, month, year, temp, rh
+        		System.out.println(startIdx+"|"+dong+"|"+gu+"|"+si+"|"+dayStr+"|"+hourStr+"|"+month+"|"+year+"|"+temp+"|"+rh);
+        		
+        		preparedStatement.setLong(1, startIdx);
+        		preparedStatement.setString(2, dong);
+        		preparedStatement.setString(3, gu);
+        		preparedStatement.setString(4, si);
+        		
+        		preparedStatement.setString(5, dayStr);
+        		preparedStatement.setString(6, hourStr);
+        		preparedStatement.setString(7, "00");
+                preparedStatement.setString(8, "00");
+                preparedStatement.setString(9, month);
+                preparedStatement.setString(10, year);
+                preparedStatement.setDouble(11, temp);
+                preparedStatement.setDouble(12, rh);
+                preparedStatement.executeUpdate();
+                
+                startIdx++;
+                hour ++;
+                if(hour > 23) {
+                	hour = 0;
+                }
+        	}
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
     
     public void insertRecordG1(
@@ -185,7 +217,7 @@ public class DataLoggerBulk {
             while((line = br.readLine()) != null) {
             	if(firstCheck) {
 	                List<String> tmpList = new ArrayList<>();
-	                String array[] = line.split(";");
+	                String array[] = line.split(",");
 	                tmpList = Arrays.asList(array);
                 	ret.add(tmpList);
             	}

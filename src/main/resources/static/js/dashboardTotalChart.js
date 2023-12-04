@@ -148,28 +148,31 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
         var w1Rh = [];
         var w2Temp = [];
         var w2Rh = [];
+        var ctTemp = [];
         
         for(var i=0;i<loggerList.length;i++){
             if(i%60 == 0){
-            var yearV = loggerList[i].year;
-            var monthV = loggerList[i].month;
-            var dayV = loggerList[i].day;
-            var hourV = loggerList[i].hour;
-            var minuteV = loggerList[i].minute;
-            var secondV = loggerList[i].second;
-            var tempV = loggerList[i].temp;
-            var rhV = loggerList[i].rh;
-            var companyIdx = loggerList[i].companyIdx;
-            if(companyIdx == 2){
-                w1Temp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
-                w1Rh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
-            }else if(companyIdx == 4){
-                w2Temp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
-                w2Rh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
-            }else{
-                nwTemp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
-                nwRh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
-            }
+                var yearV = loggerList[i].year;
+                var monthV = loggerList[i].month;
+                var dayV = loggerList[i].day;
+                var hourV = loggerList[i].hour;
+                var minuteV = loggerList[i].minute;
+                var secondV = loggerList[i].second;
+                var tempV = loggerList[i].temp;
+                var rhV = loggerList[i].rh;
+                var companyIdx = loggerList[i].companyIdx;
+                if(companyIdx == 2){
+                    w1Temp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
+                    w1Rh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
+                }else if(companyIdx == 4){
+                    w2Temp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
+                    w2Rh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
+                }else if(companyIdx == 6){
+                    nwTemp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
+                    nwRh.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,rhV])
+                }else{
+                    ctTemp.push([yearV+"-"+monthV+"-"+dayV+" "+hourV+":"+minuteV+":"+secondV,tempV])
+                }
             }
         }
         
@@ -180,7 +183,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
                 data: null,
                 type: 'scroll',
                 top: "0%",
-                width:'1400'
+                width:'1600'
             },
           tooltip: {
             trigger: 'axis',
@@ -393,6 +396,14 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               //color:'#6092C0',
               smooth: true
             }*/
+            ,{
+              name: '항온기 데이터로거 온도',
+              data: ctTemp,
+              type: 'line',
+              yAxisIndex: 1,
+              //color:'#D36086',
+              smooth: true
+            }
           ]
         };
         
