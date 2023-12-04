@@ -1,5 +1,6 @@
 package com.sdplex.egg.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,92 @@ public class ApiService {
 				.filter(meteoro -> meteoro.getAddrSi().equals("경기도") && meteoro.getAddrGu().equals("남양주시") && meteoro.getAddrDong().equals("별내동"))
 				.collect(Collectors.toList());
 		returnMap.put("meteoro", meteorologicalList);
+		
+		return returnMap;
+	}
+	
+	public Map<String, Object> getDashBoardChartSearh(List<String> paramList) {
+		Map<String, Object> returnMap = new HashMap<>();
+		List<Map<String, Object>> companyTempList = new ArrayList<>();
+		List<Map<String, Object>> companyRhList = new ArrayList<>();
+		List<Map<String, Object>> sampleTempList = new ArrayList<>();
+		List<Map<String, Object>> sampleRhList = new ArrayList<>();
+		List<Map<String, Object>> haughList = new ArrayList<>();
+		
+		for(String param : paramList) {
+			String paramType = param.split("-")[0];
+			if("sample".equals(paramType)) {
+				
+			}else if("companyTemp".equals(paramType)) {
+				Long companyIdx = Long.parseLong(param.split("-")[1]);
+				Long sampleOrder = Long.parseLong(param.split("-")[2]);
+				CompanyResponse companyResult = CompanyResponse.from(companyRepository.findById(companyIdx).get());
+				SampleResponse sampleResult = SampleResponse.from(sampleRepository.findById(sampleOrder).get());
+				List<MeteorologicalDataResponse> meteorologicalList = meteorologicalDataRepository.findAll(Sort.by(Sort.Direction.ASC, "idx"))
+						.stream()
+						.map(MeteorologicalDataResponse::from)
+						.filter(meteoro -> meteoro.getAddrSi().equals(companyResult.getAddrSi()) && meteoro.getAddrGu().equals(companyResult.getAddrGu()) && meteoro.getAddrDong().equals(companyResult.getAddrDong()))
+						.collect(Collectors.toList());
+				Map<String, Object> addMap = new HashMap<>();
+				addMap.put("gubun", sampleResult.getSampleNumber());
+				addMap.put("result", meteorologicalList);
+				companyTempList.add(addMap);
+				
+			}else if("companyRh".equals(paramType)) {
+				Long companyIdx = Long.parseLong(param.split("-")[1]);
+				Long sampleOrder = Long.parseLong(param.split("-")[2]);
+				CompanyResponse companyResult = CompanyResponse.from(companyRepository.findById(companyIdx).get());
+				SampleResponse sampleResult = SampleResponse.from(sampleRepository.findById(sampleOrder).get());
+				List<MeteorologicalDataResponse> meteorologicalList = meteorologicalDataRepository.findAll(Sort.by(Sort.Direction.ASC, "idx"))
+						.stream()
+						.map(MeteorologicalDataResponse::from)
+						.filter(meteoro -> meteoro.getAddrSi().equals(companyResult.getAddrSi()) && meteoro.getAddrGu().equals(companyResult.getAddrGu()) && meteoro.getAddrDong().equals(companyResult.getAddrDong()))
+						.collect(Collectors.toList());
+				Map<String, Object> addMap = new HashMap<>();
+				addMap.put("gubun", sampleResult.getSampleNumber());
+				addMap.put("result", meteorologicalList);
+				companyRhList.add(addMap);
+				
+			}else if("sampleTemp".equals(paramType)) {
+				Long companyIdx = Long.parseLong(param.split("-")[1]);
+				Long sampleOrder = Long.parseLong(param.split("-")[2]);
+				CompanyResponse companyResult = CompanyResponse.from(companyRepository.findById(companyIdx).get());
+				SampleResponse sampleResult = SampleResponse.from(sampleRepository.findById(sampleOrder).get());
+				Map<String, Object> addMap = new HashMap<>();
+				addMap.put("gubun", sampleResult.getSampleNumber());
+				addMap.put("result", sampleResult);
+				sampleTempList.add(addMap);
+				
+			}else if("sampleRh".equals(paramType)) {
+				Long companyIdx = Long.parseLong(param.split("-")[1]);
+				Long sampleOrder = Long.parseLong(param.split("-")[2]);
+				CompanyResponse companyResult = CompanyResponse.from(companyRepository.findById(companyIdx).get());
+				SampleResponse sampleResult = SampleResponse.from(sampleRepository.findById(sampleOrder).get());
+				Map<String, Object> addMap = new HashMap<>();
+				addMap.put("gubun", sampleResult.getSampleNumber());
+				addMap.put("result", sampleResult);
+				sampleRhList.add(addMap);
+				
+			}else if("haugh".equals(paramType)) {
+				Long sampleOrder = Long.parseLong(param.split("-")[1]);
+				Long haughUnitIdx = Long.parseLong(param.split("-")[2]);
+				SampleResponse sampleResult = SampleResponse.from(sampleRepository.findById(sampleOrder).get());
+				HaughUnitResponse haughResult = HaughUnitResponse.from(haughUnitRepository.findById(haughUnitIdx).get());
+				
+				Map<String, Object> addMap = new HashMap<>();
+				addMap.put("gubun", sampleResult.getSampleNumber());
+				addMap.put("result", haughResult);
+				haughList.add(addMap);
+				
+			}
+		}
+		
+		
+		returnMap.put("companyTempList", companyTempList);
+		returnMap.put("companyRhList", companyRhList);
+		returnMap.put("sampleTempList", sampleTempList);
+		returnMap.put("sampleRhList", sampleRhList);
+		returnMap.put("haughList", haughList);
 		
 		return returnMap;
 	}
@@ -242,6 +329,5 @@ public class ApiService {
 		
 		return param;
 	}
-	
     
 }

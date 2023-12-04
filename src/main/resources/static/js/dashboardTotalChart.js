@@ -64,7 +64,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
                     },
             axisLabel: {
                 formatter: (function(value){
-                    return moment(value).format('YY-MM-DD HH:mm');
+                    return moment(value).format('YY-MM-DD');
                 })
             }
         };
@@ -192,10 +192,11 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
             }
           },
           toolbox: {
-            show: false,
+            show: true,
+            top:"3%",
+            right:"5%",
             feature: {
-              magicType: { type: ['line', 'bar'] },
-                    saveAsImage: { show: true }
+                saveAsImage: { show: true }
             }
           },
           xAxis: xAxis,
@@ -305,7 +306,8 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               name: '기상청 온도',
               type: 'line',
               color: '#D36086',
-              smooth: true,
+              smooth: false,
+              showSymbol: false,
               yAxisIndex: 1,
               data: baseTemp
             },
@@ -352,6 +354,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               data: nwTemp,
               type: 'line',
               yAxisIndex: 1,
+              showSymbol: false,
               //color:'#D36086',
               smooth: true
             },
@@ -369,6 +372,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               data: w1Temp,
               type: 'line',
               yAxisIndex: 1,
+              showSymbol: false,
               //color:'#D36086',
               smooth: true
             },
@@ -385,6 +389,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               data: w2Temp,
               type: 'line',
               yAxisIndex: 1,
+              showSymbol: false,
               //color:'#D36086',
               smooth: true
             }/*,
@@ -401,6 +406,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
               data: ctTemp,
               type: 'line',
               yAxisIndex: 1,
+              showSymbol: false,
               //color:'#D36086',
               smooth: true
             }

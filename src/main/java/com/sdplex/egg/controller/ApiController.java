@@ -48,6 +48,13 @@ public class ApiController {
         return ResponseEntity.ok(result);
     }
     
+    @PostMapping("/dashboard/search")
+    public ResponseEntity<Map<String, Object>> getDashBoardChartSearch(@AuthenticationPrincipal SecurityUser user
+    		, @RequestBody List<String> param){
+        Map<String, Object> result = apiService.getDashBoardChartSearh(param);
+        return ResponseEntity.ok(result);
+    }
+    
     @GetMapping("/sample")
     public ResponseEntity<List<SampleResponse>> getSampleList(@AuthenticationPrincipal SecurityUser user){
         return ResponseEntity.ok(apiService.getSampleList());
