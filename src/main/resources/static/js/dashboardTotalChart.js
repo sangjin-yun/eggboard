@@ -183,7 +183,7 @@ var dashboardTotalChart = (function (dashboardTotalChart, $) {
                 data: null,
                 type: 'scroll',
                 top: "0%",
-                width:'80%'
+                width:'95%'
             },
           tooltip: {
             trigger: 'axis',
