@@ -177,7 +177,7 @@ var dashboard = (function (dashboard, $) {
                 data: null,
                 type: 'scroll',
                 top: "0%",
-                width:'1600'
+                width:'95%'
             },
           tooltip: {
             trigger: 'axis',
